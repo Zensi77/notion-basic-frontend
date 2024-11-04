@@ -1,0 +1,35 @@
+<div class="d-flex flex-column justify-content-center align-items-center min-vh-100 bg-dark">
+    <h1 class="text-white fw-bolder">Bienvenido a Notion Clone</h1>
+    <div class="col-md-6 col-lg-4">
+        <mat-card class="shadow-lg p-4">
+            <h1 class="form-title-auth fw-bold text-xxl-center m-3">Login</h1>
+            <mat-card-content>
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="email" type="email">
+                        <mat-icon matPrefix>mail_outline</mat-icon>
+                        <mat-error>Introduce un email válido</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Password</mat-label>
+                        <input matInput formControlName="password" type="password">
+                        <mat-icon matPrefix>lock_outline</mat-icon>
+                        <mat-error>
+                            {{message('password')}}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-divider class="my-2"></mat-divider>
+
+                    <button mat-flat-button color="primary" type="submit" class="btn btn-primary w-100">Login</button>
+                </form>
+
+                <div class="text-center mt-3">
+                    <a routerLink="/auth/register" class="text-decoration-none">¿No tienes cuenta? Regístrate</a>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

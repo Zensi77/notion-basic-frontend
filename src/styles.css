@@ -1,1 +1,55 @@
 /* You can add global styles to this file, and also import other style files */
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+/*Titulos para los formularios */
+.form-title-auth {
+  font-weight: bold;
+  color: #3f51b5;
+  text-transform: uppercase;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+/*! Animations */
+::view-transition-old {
+  /*nombre-duracion-funcion tiempo de la animacion-retraso-repeticiones-direccion-modo de llenado*/
+  animation: exit 3s linear 1s 1 normal forwards;
+}
+::view-transition-new {
+  animation: enter 3s linear 1s 1 normal forwards;
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes exit {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
