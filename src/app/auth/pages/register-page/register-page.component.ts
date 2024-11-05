@@ -28,10 +28,6 @@ export class RegisterPageComponent {
   private validator = inject(ValidatorService);
   private router = inject(Router);
 
-  constructor() {
-    setTimeout(() => {}, 300);
-  }
-
   registerForm = this.fb.group(
     {
       name: ['', [Validators.required]],

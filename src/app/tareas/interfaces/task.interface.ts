@@ -1,16 +1,16 @@
-enum State {
-  'No comenzado',
-  'Empezado',
-  'Completado',
+export enum State {
+  completado = 'Completado',
+  en_progreso = 'En Progreso',
+  no_comenzado = 'No Comenzado',
 }
 
-enum Prioridad {
-  'Baja',
-  'Media',
-  'Alta',
+export enum Prioridad {
+  baja = 'Baja',
+  media = 'Media',
+  alta = 'Alta',
 }
 
-export interface Tarea {
+export interface Task {
   id: number;
   title: string;
   description: string;

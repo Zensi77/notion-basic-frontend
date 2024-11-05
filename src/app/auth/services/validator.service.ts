@@ -31,6 +31,7 @@ export class ValidatorService {
 
       const errors = formGroup.controls[field].errors ?? null;
       if (!errors) return;
+      console.log(errors);
 
       for (const key of Object.keys(errors)) {
         switch (key) {

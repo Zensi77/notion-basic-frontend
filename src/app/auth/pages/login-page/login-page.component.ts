@@ -10,10 +10,12 @@ import { MatDividerModule } from '@angular/material/divider';
 import { Router, RouterModule } from '@angular/router';
 import { ValidatorService } from '../../services/validator.service';
 import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 
 @Component({
   standalone: true,
   imports: [
+    CommonModule,
     ReactiveFormsModule,
     RouterModule,
     MatFormFieldModule,
@@ -37,15 +39,12 @@ export class LoginPageComponent {
     password: ['123456', [Validators.required, Validators.minLength(6)]],
   });
 
-  isValidField(field: string): boolean {
-    return this.loginForm.controls[field].touched &&
-      !this.loginForm.controls[field].errors
-      ? true
-      : false;
+  isValidField(field: string) {
+    return this.validator.isValidField(field, this.loginForm);
   }
 
   message(field: string) {
-    this.validator.message(field)(this.loginForm);
+    return this.validator.message(field)(this.loginForm);
   }
 
   onSubmit() {

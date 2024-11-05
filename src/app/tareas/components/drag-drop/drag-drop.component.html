@@ -1,0 +1,32 @@
+<div class="example-container">
+    <h2>No comenzado</h2>
+
+    <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="no_comenzado"
+        [cdkDropListConnectedTo]="[doneList, startedList]" class="example-list" (cdkDropListDropped)="drop($event)">
+        @for (item of no_comenzado; track item) {
+        <div class="example-box" cdkDrag>{{item}}</div>
+        }
+    </div>
+</div>
+
+<div class="example-container">
+    <h2>Comenzado</h2>
+
+    <div cdkDropList #startedList="cdkDropList" [cdkDropListData]="comenzado"
+        [cdkDropListConnectedTo]="[todoList, doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
+        @for (item of comenzado; track item) {
+        <div class="example-box" cdkDrag>{{item}}</div>
+        }
+    </div>
+</div>
+
+<div class="example-container">
+    <h2>Terminado</h2>
+
+    <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="completado"
+        [cdkDropListConnectedTo]="[todoList, startedList]" class="example-list" (cdkDropListDropped)="drop($event)">
+        @for (item of completado; track item) {
+        <div class="example-box" cdkDrag>{{item}}</div>
+        }
+    </div>
+</div>

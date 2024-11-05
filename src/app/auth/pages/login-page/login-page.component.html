@@ -9,16 +9,22 @@
                         <mat-label>Email</mat-label>
                         <input matInput formControlName="email" type="email">
                         <mat-icon matPrefix>mail_outline</mat-icon>
-                        <mat-error>Introduce un email válido</mat-error>
+                        @if (isValidField('email')) {
+                        <mat-error>
+                            {{message('email')}}
+                        </mat-error>
+                        }
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label>Password</mat-label>
                         <input matInput formControlName="password" type="password">
                         <mat-icon matPrefix>lock_outline</mat-icon>
+                        @if (isValidField('password')) {
                         <mat-error>
                             {{message('password')}}
                         </mat-error>
+                        }
                     </mat-form-field>
 
                     <mat-divider class="my-2"></mat-divider>
