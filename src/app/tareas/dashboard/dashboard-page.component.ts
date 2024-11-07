@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterModule } from '@angular/router';
 
 import { User } from '../../auth/interfaces/user.interfaces';
@@ -8,6 +8,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
+import { AuthService } from '../../auth/services/auth.service';
 
 interface MenuItems {
   title: string;
@@ -32,10 +33,9 @@ interface MenuItems {
 })
 export class DashboardPageComponent {
   private router = inject(Router);
+  private authService = inject(AuthService);
 
-  user = signal<User | undefined>({
-    name: 'Juanma',
-  });
+  user = computed(() => this.authService.currentUser());
 
   sidebarItems: MenuItems[] = [
     {
@@ -51,7 +51,7 @@ export class DashboardPageComponent {
   ];
 
   logOut() {
-    this.user.set(undefined);
+    this.authService.logOut();
     this.router.navigate(['/auth/login']);
   }
 }

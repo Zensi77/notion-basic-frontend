@@ -1,0 +1,22 @@
+/* Animación para mover al centro */
+@keyframes moveToCenter {
+  0% {
+    transform: scale(1) translate(0, 0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) translate(50%, -50%);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1) translate(0, 0);
+    opacity: 1;
+  }
+}
+
+/* Cuando la animación está activada */
+.animar .mat-card {
+  animation: moveToCenter 1s ease-in-out forwards;
+  transition: transform 0.3s ease-in-out;
+  position: relative; /* Necesario para transformar de forma correcta */
+}

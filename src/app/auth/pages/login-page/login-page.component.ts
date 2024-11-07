@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -34,10 +39,17 @@ export class LoginPageComponent {
   private formBuilder = inject(FormBuilder);
   private validator = inject(ValidatorService);
 
+  public hide = signal(true);
+
   public loginForm: FormGroup = this.formBuilder.group({
     email: ['prueba@prueba.com', [Validators.required, Validators.email]],
     password: ['123456', [Validators.required, Validators.minLength(6)]],
   });
+
+  clickEvent(event: MouseEvent) {
+    this.hide.set(!this.hide());
+    event.stopPropagation();
+  }
 
   isValidField(field: string) {
     return this.validator.isValidField(field, this.loginForm);
