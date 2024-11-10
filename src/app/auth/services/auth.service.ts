@@ -19,7 +19,7 @@ export class AuthService {
 
   constructor() {
     this._currentUser.set({
-      id: 'a8b8c8d8-e8f8-11ec-b939-0242ac120002',
+      id: 'a8b8c8d8-e8f8-4c8b-af23-0a0f0a0f0a0f',
       name: 'Alice Johnson',
       email: 'alice.johnson@example.com',
     });

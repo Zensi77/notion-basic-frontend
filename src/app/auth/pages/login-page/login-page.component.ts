@@ -7,29 +7,14 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDividerModule } from '@angular/material/divider';
 import { Router, RouterModule } from '@angular/router';
 import { ValidatorService } from '../../services/validator.service';
-import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
+import { MaterialModule } from '../../../material/material.module';
 
 @Component({
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatCardModule,
-    MatButtonModule,
-    MatDividerModule,
-    MatIconModule,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, MaterialModule],
   templateUrl: './login-page.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,

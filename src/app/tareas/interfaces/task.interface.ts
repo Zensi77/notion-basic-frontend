@@ -1,7 +1,9 @@
-export enum State {
+import { UUID } from 'crypto';
+
+export enum state {
   completado = 'Completado',
-  en_progreso = 'En Progreso',
-  no_comenzado = 'No Comenzado',
+  en_progreso = 'En progreso',
+  no_comenzado = 'No comenzado',
 }
 
 export enum Prioridad {
@@ -11,11 +13,12 @@ export enum Prioridad {
 }
 
 export interface Task {
-  id: number;
+  id: UUID;
   title: string;
   description: string;
-  state: State;
+  state: state;
   prioridad: Prioridad;
   fecha_inicio: Date;
   fecha_fin: Date;
+  user_id: UUID;
 }

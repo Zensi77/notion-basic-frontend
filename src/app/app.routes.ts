@@ -38,15 +38,20 @@ export const routes: Routes = [
           import('./tareas/pages/principal-page/principal-page.component').then(
             (m) => m.PrincipalPageComponent
           ),
-        children: [
-          {
-            path: 'new/:id',
-            loadComponent: () =>
-              import('./tareas/pages/form-task/form-task.component').then(
-                (m) => m.FormTaskComponent
-              ),
-          },
-        ],
+      },
+      {
+        path: 'tasks/new',
+        loadComponent: () =>
+          import('./tareas/pages/form-task/form-task.component').then(
+            (m) => m.FormTaskComponent
+          ),
+      },
+      {
+        path: 'tasks/edit/:id',
+        loadComponent: () =>
+          import('./tareas/pages/form-task/form-task.component').then(
+            (m) => m.FormTaskComponent
+          ),
       },
       {
         path: 'stats',

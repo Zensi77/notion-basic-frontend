@@ -1,1 +1,67 @@
-<p>form-task works!</p>
+@if (id) {
+<h1>Editar tarea <strong> {{taskToEdit?.title}} </strong></h1>
+}@else {
+<h1>Nueva tarea</h1>
+}
+<div class="container">
+    <form [formGroup]="taskForm" class="d-flex flex-column" (ngSubmit)="onSubmit()">
+        <mat-form-field>
+            <mat-label>Titulo</mat-label>
+            <input matInput formControlName="title">
+            <mat-error>
+                <span *ngIf="taskForm.get('title')?.hasError('required')">El titulo es obligatorio</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Descripcion</mat-label>
+            <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>state</mat-label>
+            <mat-select formControlName="state">
+                @for (item of states; track $index) {
+                <mat-option [value]="item">{{item}}</mat-option>
+                }
+            </mat-select>
+            <mat-error>
+                <span *ngIf="taskForm.get('state')?.hasError('required')">La prioridad es obligatoria</span>
+            </mat-error>
+
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Prioridad</mat-label>
+            <mat-select formControlName="prioridad">
+                @for (item of prioridades; track $index) {
+                <mat-option [value]="item">{{item}}</mat-option>
+                }
+            </mat-select>
+            <mat-error>
+                <span *ngIf="taskForm.get('prioridad')?.hasError('required')">La prioridad es obligatoria</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Introduce duracion de tarea</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+                <input matStartDate placeholder="Start date" formControlName="fecha_inicio">
+                <input matEndDate placeholder="End date" formControlName="fecha_fin">
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+
+        </mat-form-field>
+
+        <button type="submit" mat-flat-button color="primary" class="m-2">
+            @if (id) {
+            Editar tarea
+            }@else {
+            Crear tarea
+            }
+        </button>
+        <button type="button" mat-flat-button color="warn" class="m-2" routerLink="/">
+            Cancelar
+        </button>
+    </form>
+
+</div>
+{{taskForm.value | json}}

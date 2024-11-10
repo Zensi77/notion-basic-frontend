@@ -3,31 +3,47 @@
     <button mat-flat-button (click)="sortBy('prioridad')" color="accent">Sort by priority</button>
     <button mat-flat-button (click)="sortBy('fecha_fin')" color="accent">Sort by date</button>
     <button mat-flat-button (click)="sortBy('state')" color="accent">Sort by state</button>
-    <button mat-flat-button color="primary">New Task</button>
+    <a mat-flat-button color="primary" routerLink="new">New Task</a>
 </div>
 <span class="spacer"></span>
 <mat-divider class="m-3"></mat-divider>
 
 
-<div class="row" [ngClass]="{'animar': animacionOrdenacion()}">
-    <mat-card *ngFor="let item of tasks;" class="col-md-4 mb-4" (click)="completeTask(item)">
+<div class="row d-flex justify-content-center">
+    @if (!loading() && tasks().length===0) {
+    <div class="col-md-12">
+        <h2>No hay tareas, añade una ahora</h2>
+    </div>
+    }
+    <mat-card *ngFor="let item of tasks();" class="col-md-3 m-3" [ngClass]="getStatusClass(item.state)">
         <mat-card-header>
             <mat-card-title>{{item.title}}</mat-card-title>
             <mat-card-subtitle>
-                <strong>Estado:</strong> {{item.state}} - <strong>Prioridad:</strong> {{item.prioridad}}
+                <strong>state:</strong> {{item.state}} - <strong>Prioridad:</strong> {{item.prioridad}}
             </mat-card-subtitle>
         </mat-card-header>
         <mat-divider class="m-2"></mat-divider>
         <mat-card-content>
             <p>{{item.description}}</p>
             <p><strong>Fecha inicio:</strong> {{item.fecha_inicio | date}}</p>
+            @if (item.fecha_fin) {
             <p><strong>Fecha fin:</strong> {{item.fecha_fin | date}}</p>
+            }
         </mat-card-content>
         <mat-divider class="m-2"></mat-divider>
         <mat-card-footer>
             <div class="d-flex justify-content-around m-2">
-                <button mat-flat-button color="primary">Edit</button>
-                <button mat-flat-button color="warn">Delete</button>
+                <button mat-flat-button color="primary" [routerLink]="['edit', item.id]">Edit</button>
+                <div>
+                    <button class="bg-purple" mat-button [matMenuTriggerFor]="menu">Cambiar Estado</button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="changeState(0, item)">No comenzado</button>
+                        <button mat-menu-item (click)="changeState(1, item)">En progreso</button>
+                        <button mat-menu-item (click)="changeState(2, item)">Completado</button>
+                    </mat-menu>
+
+                </div>
+                <button mat-flat-button color="warn" (click)="deleteTask(item.id)">Delete</button>
             </div>
         </mat-card-footer>
     </mat-card>

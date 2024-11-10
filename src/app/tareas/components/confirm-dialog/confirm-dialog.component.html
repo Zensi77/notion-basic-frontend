@@ -1,0 +1,7 @@
+<h1 mat-dialog-title>Esta seguro?</h1>
+<p mat-dialog-content>¿Está seguro de que desea eliminar la tarea seleccionada?</p>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()" [mat-dialog-close]="false">Cancelar</button>
+    <span class="spacer"></span>
+    <button mat-button (click)="onConfirm()" color="primary" cdkFocusInitial>Eliminar</button>
+</div>

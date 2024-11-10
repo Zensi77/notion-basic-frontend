@@ -1,22 +1,16 @@
-/* Animación para mover al centro */
-@keyframes moveToCenter {
-  0% {
-    transform: scale(1) translate(0, 0);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.2) translate(50%, -50%);
-    opacity: 0.5;
-  }
-  100% {
-    transform: scale(1) translate(0, 0);
-    opacity: 1;
-  }
+.completed {
+  text-decoration: line-through;
+  color: #ccc;
+  opacity: 0.9;
+  border: 1px solid green;
 }
 
-/* Cuando la animación está activada */
-.animar .mat-card {
-  animation: moveToCenter 1s ease-in-out forwards;
-  transition: transform 0.3s ease-in-out;
-  position: relative; /* Necesario para transformar de forma correcta */
+.pendiente {
+  color: yellow;
+  border: 1px solid yellow;
+}
+
+.iniciar {
+  color: red;
+  border: 1px solid red;
 }
