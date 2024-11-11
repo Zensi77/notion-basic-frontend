@@ -47,21 +47,21 @@ export class DragDropComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<Task[]>) {
+    /* Lista de eventos disponibles
+    event.previousContainer: El contenedor de donde viene
+    event.container: El contenedor a donde va
+    event.previousIndex: El índice de donde viene
+    event.currentIndex: El índice a donde va
+    event.container.id: nombre del contenedor a donde va
+    event.container.data[]: array de los item del contenedor
+    event.previousContainer.data[]: array de los item del contenedor de donde viene
+    */
     if (event.previousContainer === event.container) {
-      moveItemInArray(
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
+      moveItemInArray(event.container.data, event.previousIndex, 0);
     } else {
       const task = event.previousContainer.data[event.previousIndex];
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-      console.log(event.container.id);
+      event.previousContainer.data.splice(event.previousIndex, 1);
+      event.container.data.push(task);
 
       if (event.container.id === state.no_comenzado) {
         task.state = state.no_comenzado;

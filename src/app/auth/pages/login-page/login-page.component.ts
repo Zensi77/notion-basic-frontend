@@ -11,6 +11,10 @@ import { Router, RouterModule } from '@angular/router';
 import { ValidatorService } from '../../services/validator.service';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../material/material.module';
+import { AuthService } from '../../services/auth.service';
+
+import Swal from 'sweetalert2';
+import { error } from 'console';
 
 @Component({
   standalone: true,
@@ -21,14 +25,15 @@ import { MaterialModule } from '../../../material/material.module';
 })
 export class LoginPageComponent {
   router = inject(Router);
-  private formBuilder = inject(FormBuilder);
-  private validator = inject(ValidatorService);
+  private _formBuilder = inject(FormBuilder);
+  private _validator = inject(ValidatorService);
+  private _authService = inject(AuthService);
 
   public hide = signal(true);
 
-  public loginForm: FormGroup = this.formBuilder.group({
-    email: ['prueba@prueba.com', [Validators.required, Validators.email]],
-    password: ['123456', [Validators.required, Validators.minLength(6)]],
+  public loginForm: FormGroup = this._formBuilder.group({
+    email: ['juanma@gmail.com', [Validators.required, Validators.email]],
+    password: ['juanma', [Validators.required, Validators.minLength(6)]],
   });
 
   clickEvent(event: MouseEvent) {
@@ -37,11 +42,11 @@ export class LoginPageComponent {
   }
 
   isValidField(field: string) {
-    return this.validator.isValidField(field, this.loginForm);
+    return this._validator.isValidField(field, this.loginForm);
   }
 
   message(field: string) {
-    return this.validator.message(field)(this.loginForm);
+    return this._validator.message(field)(this.loginForm);
   }
 
   onSubmit() {
@@ -51,7 +56,11 @@ export class LoginPageComponent {
     }
 
     if (this.loginForm.valid) {
-      this.router.navigate(['/home']);
+      const { email, password } = this.loginForm.value;
+      this._authService.login(email, password).subscribe({
+        next: () => this.router.navigate(['/tasks']),
+        error: (err) => Swal.fire('Error', err.error, 'error'),
+      });
     }
   }
 }
