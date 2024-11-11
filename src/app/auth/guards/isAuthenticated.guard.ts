@@ -7,6 +7,7 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { map } from 'rxjs';
+import { AuthStatus } from '../interfaces/auth-status.enum';
 
 export const isAuthenticatedguard: CanActivateFn = (
   route: ActivatedRouteSnapshot,

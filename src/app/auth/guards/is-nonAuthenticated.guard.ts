@@ -7,6 +7,7 @@ import {
 } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { map } from 'rxjs';
+import { AuthStatus } from '../interfaces/auth-status.enum';
 
 export const NonAuthenticatedGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot,

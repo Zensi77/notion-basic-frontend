@@ -1,11 +1,4 @@
-import {
-  afterNextRender,
-  computed,
-  effect,
-  inject,
-  Injectable,
-  signal,
-} from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { User } from '../interfaces/user.interfaces';
 import { AuthStatus } from '../interfaces/auth-status.enum';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -26,9 +19,9 @@ export class AuthService {
   currentUser = computed(() => this._currentUser());
   authStatus = computed(() => this._authStatus());
 
-  // changeAuthStatusEffect = effect(() => {
-  //   console.log('Auth Status Changed:', this.authStatus());
-  // });
+  changeAuthStatusEffect = effect(() => {
+    console.log('Auth Status Changed:', this.authStatus());
+  });
 
   login(username: string, password: string): Observable<boolean> {
     const url = environment.user_base_url + '/token';
