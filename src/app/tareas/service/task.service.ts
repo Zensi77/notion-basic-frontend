@@ -71,8 +71,14 @@ export class TaskService {
   }
 
   editTask(task: Task) {
-    const task_edit = { ...task, user_id: this._authService.currentUser()?.id };
-    console.log(task_edit);
+    const task_edit = {
+      ...task,
+      user_id: this._authService.currentUser()?.id,
+      fecha_inicio: task.fecha_inicio
+        ? this.formatDate(task.fecha_inicio)
+        : null,
+      fecha_fin: task.fecha_fin ? this.formatDate(task.fecha_fin) : null,
+    };
 
     return this._http.put<Task>(`${environment.task_base_url}`, task_edit);
   }

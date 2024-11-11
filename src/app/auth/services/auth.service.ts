@@ -1,10 +1,18 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
+import {
+  afterNextRender,
+  computed,
+  effect,
+  inject,
+  Injectable,
+  signal,
+} from '@angular/core';
 import { User } from '../interfaces/user.interfaces';
 import { AuthStatus } from '../interfaces/auth-status.enum';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { LoginResponse } from '../interfaces/login-response';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
@@ -15,52 +23,80 @@ export class AuthService {
   private _currentUser = signal<User | null>(null);
   private _authStatus = signal<AuthStatus>(AuthStatus.checking);
 
-  //Emit auth status to the app
   currentUser = computed(() => this._currentUser());
   authStatus = computed(() => this._authStatus());
 
-  constructor() {
-    this.checkAuthStatus();
-  }
+  // changeAuthStatusEffect = effect(() => {
+  //   console.log('Auth Status Changed:', this.authStatus());
+  // });
 
   login(username: string, password: string): Observable<boolean> {
     const url = environment.user_base_url + '/token';
-    // La api espera los datos en formato x-www-form-urlencoded
     const body = `username=${username}&password=${password}`;
-    console.log(body);
 
     return this._http
       .post<LoginResponse>(url, body, {
-        // Especificar el tipo de contenido, por defecto angular envía json
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       })
       .pipe(
-        map(({ token }) => this.setAuthentication(token)),
+        map(({ access_token }) => this.setAuthentication(access_token)),
         catchError((err) => {
-          console.log(err);
-          return throwError('Credenciales incorrectas');
+          console.error('Login error:', err);
+          return throwError(() => new Error('Invalid credentials'));
         })
       );
   }
 
-  private checkAuthStatus(): Observable<boolean> {
-    return of(true);
+  checkAuthStatus(): Observable<boolean> {
+    console.log('Checking auth status');
+
+    const url = `${environment.user_base_url}/check-token`;
+    const token = localStorage.getItem('token');
+    //? https://stackoverflow.com/questions/77534244/local-storage-is-not-defined-in-angular-17
+    console.log('Token:', token);
+    if (!token) {
+      this._authStatus.set(AuthStatus.unauthenticated);
+      return of(false);
+    }
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    console.log('Headers:', headers);
+
+    return this._http.post<LoginResponse>(url, {}, { headers }).pipe(
+      map((res) => {
+        this.setAuthentication(token);
+        this._authStatus.set(AuthStatus.authenticated);
+        return true;
+      }),
+      catchError((err) => {
+        console.log(err);
+        this._authStatus.set(AuthStatus.unauthenticated);
+        return of(false);
+      })
+    );
   }
 
   private setAuthentication(token: string): boolean {
-    //this._currentUser.set(user);
+    console.log('Setting authentication:', token);
+
+    const { sub, email, id } = jwtDecode<any>(token);
+
+    this._currentUser.set({ id, email, name: sub });
     this._authStatus.set(AuthStatus.authenticated);
-    localStorage.setItem('token', token);
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('token', token);
+    }
 
     return true;
   }
 
   logOut() {
-    // sessionStorage.removeItem('token');
     this._currentUser.set(null);
     this._authStatus.set(AuthStatus.unauthenticated);
-    sessionStorage.removeItem('token');
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('token');
+    }
   }
 }
