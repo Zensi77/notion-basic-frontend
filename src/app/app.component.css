@@ -1,0 +1,30 @@
+/* Estilo para el spinner */
+ngx-loading-bar {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  width: auto;
+  height: auto;
+}
+
+/* Estilo para hacer el spinner más grande */
+ngx-loading-bar .bar {
+  width: 200px; /* Puedes ajustar el tamaño */
+  height: 200px;
+  border-radius: 50%;
+  border: 10px solid #f3f3f3; /* Fondo del spinner */
+  border-top: 10px solid #3498db; /* Color de la parte del spinner que gira */
+  animation: spin 1s linear infinite;
+}
+
+/* Animación para el spinner */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

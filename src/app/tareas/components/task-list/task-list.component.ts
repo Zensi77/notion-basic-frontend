@@ -3,7 +3,6 @@ import {
   Component,
   inject,
   OnInit,
-  signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -16,6 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { catchError, filter, of, switchMap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'task-list',
@@ -88,7 +88,7 @@ export class TaskListComponent implements OnInit {
         : state.completado;
     this._taskService.editTask(item).subscribe(() => {
       catchError((error) => {
-        console.error('Error al cambiar el estado', error);
+        Swal.fire('Error', 'Error al modificar el estado de la tarea', 'error');
         return of(null);
       });
       this._taskService.getTasks();
@@ -109,7 +109,7 @@ export class TaskListComponent implements OnInit {
         filter((result: boolean) => result), // Si el usuario cancela el dialogo, no se ejecuta el switchMap
         switchMap(() => this._taskService.deleteTask(id)), // Si acepta el dialogo, se ejecuta el la accion
         catchError((error) => {
-          console.error('Error al eliminar la tarea', error);
+          Swal.fire('Error', 'Error al eliminar la tarea', 'error');
           return of([]);
         })
       )

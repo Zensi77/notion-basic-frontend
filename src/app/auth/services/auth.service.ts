@@ -6,6 +6,7 @@ import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { LoginResponse } from '../interfaces/login-response';
 import { jwtDecode } from 'jwt-decode';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root',
@@ -36,26 +37,28 @@ export class AuthService {
       .pipe(
         map(({ access_token }) => this.setAuthentication(access_token)),
         catchError((err) => {
-          console.error('Login error:', err);
+          if (err.status === 401) {
+            Swal.fire('Error', 'Token inválido', 'error');
+          } else if (err.status === 500) {
+            Swal.fire('Error', 'Error en el servidor', 'error');
+          }
+
           return throwError(() => new Error('Invalid credentials'));
         })
       );
   }
 
   checkAuthStatus(): Observable<boolean> {
-    console.log('Checking auth status');
-
     const url = `${environment.user_base_url}/check-token`;
     const token = localStorage.getItem('token');
     //? https://stackoverflow.com/questions/77534244/local-storage-is-not-defined-in-angular-17
-    console.log('Token:', token);
+
     if (!token) {
       this._authStatus.set(AuthStatus.unauthenticated);
       return of(false);
     }
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    console.log('Headers:', headers);
 
     return this._http.post<LoginResponse>(url, {}, { headers }).pipe(
       map((res) => {
@@ -64,7 +67,11 @@ export class AuthService {
         return true;
       }),
       catchError((err) => {
-        console.log(err);
+        if (err.status === 401) {
+          Swal.fire('Error', 'Token inválido', 'error');
+        } else if (err.status === 500) {
+          Swal.fire('Error', 'Error en el servidor', 'error');
+        }
         this._authStatus.set(AuthStatus.unauthenticated);
         return of(false);
       })
@@ -72,15 +79,11 @@ export class AuthService {
   }
 
   private setAuthentication(token: string): boolean {
-    console.log('Setting authentication:', token);
-
     const { sub, email, id } = jwtDecode<any>(token);
 
     this._currentUser.set({ id, email, name: sub });
     this._authStatus.set(AuthStatus.authenticated);
-    if (typeof localStorage !== 'undefined') {
-      localStorage.setItem('token', token);
-    }
+    localStorage.setItem('token', token);
 
     return true;
   }
@@ -88,8 +91,6 @@ export class AuthService {
   logOut() {
     this._currentUser.set(null);
     this._authStatus.set(AuthStatus.unauthenticated);
-    if (typeof localStorage !== 'undefined') {
-      localStorage.removeItem('token');
-    }
+    localStorage.removeItem('token');
   }
 }

@@ -14,7 +14,6 @@ import { MaterialModule } from '../../../material/material.module';
 import { AuthService } from '../../services/auth.service';
 
 import Swal from 'sweetalert2';
-import { error } from 'console';
 
 @Component({
   standalone: true,

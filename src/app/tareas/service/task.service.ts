@@ -65,10 +65,6 @@ export class TaskService {
     valid_task.user_id = this.user()!.id;
     return this._http.post<Task>(`${environment.task_base_url}`, valid_task);
   }
-  formatDate(date: Date) {
-    // Tansformar la fecha a un formato valido or el backend
-    return date.toISOString().split('T')[0];
-  }
 
   editTask(task: Task) {
     const task_edit = {
@@ -81,6 +77,14 @@ export class TaskService {
     };
 
     return this._http.put<Task>(`${environment.task_base_url}`, task_edit);
+  }
+
+  formatDate(date: Date) {
+    // Crear una nueva fecha con el formato de la fecha recibida para poder transformarla
+    let date_formated = new Date(date);
+
+    // Tansformar la fecha a un formato valido or el backend
+    return date_formated.toISOString().split('T')[0];
   }
 
   deleteTask(id: UUID) {

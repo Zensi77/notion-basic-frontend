@@ -23,6 +23,8 @@
     "@angular/platform-server": "^18.2.0",
     "@angular/router": "^18.2.0",
     "@angular/ssr": "^18.2.10",
+    "@ngx-loading-bar/core": "^7.0.0",
+    "@ngx-loading-bar/router": "^7.0.0",
     "bootstrap": "^5.3.3",
     "express": "^4.18.2",
     "jwt-decode": "^4.0.0",
