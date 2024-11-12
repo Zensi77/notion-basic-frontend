@@ -48,6 +48,11 @@ export class DashboardPageComponent {
       icon: 'query_stats',
       route: './stats',
     },
+    {
+      title: 'Tareas compartidas',
+      icon: 'shared_task',
+      route: './sharedTasks',
+    },
   ];
 
   logOut() {

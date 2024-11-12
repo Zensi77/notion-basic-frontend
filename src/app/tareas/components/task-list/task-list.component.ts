@@ -30,7 +30,6 @@ export class TaskListComponent implements OnInit {
   private _matDialog = inject(MatDialog);
   private _snackBar = inject(MatSnackBar);
 
-  loading = this._taskService.loading;
   tasks = this._taskService.taskList;
 
   ngOnInit(): void {

@@ -12,33 +12,24 @@ import { UUID } from 'crypto';
 export class TaskService {
   private _http = inject(HttpClient);
   private _authService = inject(AuthService);
-  private _loading = signal<boolean>(false);
   private _taskList = signal<Task[]>([]);
 
   user = computed(() => this._authService.currentUser());
-  loading = computed(() => this._loading());
   taskList = computed(() => this._taskList());
 
   getTasks() {
-    this._loading.set(true);
-
     const user = this.user();
-    if (user) {
-      return this._http
-        .get<Task[]>(`${environment.task_base_url}/${user.id}`)
-        .pipe(
-          catchError((error) => {
-            this._loading.set(false);
-            console.error('Error al obtener las tareas', error);
-            return of([]);
-          })
-        )
-        .subscribe((tasks) => {
-          this._taskList.set(tasks);
-          this._loading.set(false);
-        });
-    }
-    return console.error('No hay usuario logueado');
+    this._http
+      .get<Task[]>(`${environment.task_base_url}/${user!.id}`)
+      .pipe(
+        catchError((error) => {
+          console.error('Error al obtener las tareas', error);
+          return of([]);
+        })
+      )
+      .subscribe((tasks) => {
+        this._taskList.set(tasks);
+      });
   }
 
   getTaskById(id: UUID) {

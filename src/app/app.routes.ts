@@ -27,6 +27,11 @@ export const routes: Routes = [
           ),
         canActivate: [NonAuthenticatedGuard],
       },
+      {
+        path: '',
+        redirectTo: 'login',
+        pathMatch: 'full',
+      },
     ],
   },
   {
@@ -70,6 +75,14 @@ export const routes: Routes = [
             './tareas/pages/stadistics-page/stadistics-page.component'
           ).then((m) => m.StadisticsPageComponent),
         canActivate: [isAuthenticatedguard],
+      },
+      {
+        path: 'sharedTasks',
+        title: 'Shared Tasks',
+        loadComponent: () =>
+          import('./tareas/pages/shared-page/shared-page.component').then(
+            (m) => m.SharedPageComponent
+          ),
       },
       {
         path: '',

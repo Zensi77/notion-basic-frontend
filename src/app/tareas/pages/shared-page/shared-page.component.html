@@ -1,0 +1,32 @@
+<div class="container">
+    <div class="row">
+        <div class="col-8"></div>
+        <div class="col-4">
+            <button mat-flat-button color="primary" (click)="openDialog()">Compartir tarea</button>
+        </div>
+    </div>
+
+    <ng-template #noShared>
+        <h1>
+            No tienes tareas compartidas
+        </h1>
+    </ng-template>
+
+    <div class="row" *ngIf="sharedList().length > 0; else noShared">
+        <h1>Tus tareas compartidas</h1>
+
+        @for (item of sharedList(); track $index) {
+        <div>
+            <mat-card appearance="outlined">
+                <mat-card-header>
+                    <mat-card-title> {{ item.title }} </mat-card-title>
+                    <mat-card-subtitle> {{item.description}} </mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-actions align="end">
+                    <button mat-button>Show More</button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+        }
+    </div>
+</div>

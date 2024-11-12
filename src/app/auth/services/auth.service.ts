@@ -7,12 +7,14 @@ import { environment } from '../../../environments/environment.development';
 import { LoginResponse } from '../interfaces/login-response';
 import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private _http = inject(HttpClient);
+  private _router = inject(Router);
 
   private _currentUser = signal<User | null>(null);
   private _authStatus = signal<AuthStatus>(AuthStatus.checking);
@@ -20,9 +22,7 @@ export class AuthService {
   currentUser = computed(() => this._currentUser());
   authStatus = computed(() => this._authStatus());
 
-  changeAuthStatusEffect = effect(() => {
-    console.log('Auth Status Changed:', this.authStatus());
-  });
+  changeAuthStatusEffect = effect(() => {});
 
   login(username: string, password: string): Observable<boolean> {
     const url = environment.user_base_url + '/token';
@@ -38,7 +38,7 @@ export class AuthService {
         map(({ access_token }) => this.setAuthentication(access_token)),
         catchError((err) => {
           if (err.status === 401) {
-            Swal.fire('Error', 'Token inválido', 'error');
+            Swal.fire('Error', 'Session cerrada', 'error');
           } else if (err.status === 500) {
             Swal.fire('Error', 'Error en el servidor', 'error');
           }

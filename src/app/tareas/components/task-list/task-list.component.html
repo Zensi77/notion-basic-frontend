@@ -10,7 +10,7 @@
 
 
 <div class="row d-flex justify-content-center">
-    @if (!loading() && tasks().length===0) {
+    @if (tasks().length===0) {
     <div class="col-md-12">
         <h2>No hay tareas, añade una ahora</h2>
     </div>

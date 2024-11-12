@@ -1,0 +1,21 @@
+<div class="container">
+    <h1 mat-dialog-title>Comparte una tarea</h1>
+    <div mat-dialog-content>
+        <h3>Seleccione una tarea</h3>
+        <form class="example-form">
+            <mat-form-field class="example-full-width">
+                <mat-label>Number</mat-label>
+                <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="myControl"
+                    [matAutocomplete]="auto">
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option.title">
+                        {{option.title}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button (click)="close()">Compartir</button>
+    </div>
+</div>

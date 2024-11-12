@@ -17,22 +17,5 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
     });
   }
 
-  return next(req).pipe(
-    catchError((err) => {
-      Swal.fire({
-        title: 'Sesión expirada',
-        text: 'Tu sesión ha expirado o no estás logueado.',
-        icon: 'error',
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        showConfirmButton: false,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      }).then(() => {
-        router.navigate(['/auth/login']);
-      });
-      throw err;
-    })
-  );
+  return next(req);
 };
