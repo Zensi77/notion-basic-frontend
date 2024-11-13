@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="col-6">
+        <h1>
+            Detalles de la tarea
+        </h1>
+
+        <mat-card appearance="outlined">
+            <mat-card-header>
+                <mat-card-title> {{ taskShared.title }} </mat-card-title>
+                <mat-card-subtitle> {{taskShared.description}} </mat-card-subtitle>
+            </mat-card-header>
+            <mat-divider class="m-2"></mat-divider>
+            <mat-card-content>
+                <p> Prioridad {{taskShared.prioridad}} </p>
+                <p> Estado {{taskShared.state}} </p>
+                <p> Fecha Inicio {{taskShared.fecha_inicio| date: 'dd/MM/yyyy'}} </p>
+                <p> Fecha Fin {{taskShared.fecha_fin| date: 'dd/MM/yyyy'}} </p>
+            </mat-card-content>
+            <mat-divider class="m-2"></mat-divider>
+            <mat-card-footer class="text-center">
+                <p>Tarea compartida por <strong>{{creator.name}}</strong> </p>
+                <p>Para mas informacion contacte con <strong>{{creator.email}}</strong> </p>
+            </mat-card-footer>
+        </mat-card>
+    </div>
+    <div class="col-6">
+        <chat-shared></chat-shared>
+    </div>
+</div>

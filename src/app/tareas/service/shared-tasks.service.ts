@@ -21,7 +21,8 @@ export class SharedTasksService {
   }
 
   shareTask(data: SharedTask): Observable<boolean> {
-    const url = `${this.url}`;
+    const url = `${this.url}/${this.authService.currentUser()?.id}`;
+
     return this._http.post<boolean>(url, data);
   }
 }

@@ -3,8 +3,9 @@ import { Task } from '../interfaces/task.interface';
 import { AuthService } from '../../auth/services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
-import { catchError, of, throwError } from 'rxjs';
+import { catchError, Observable, of, throwError } from 'rxjs';
 import { UUID } from 'crypto';
+import { User } from '../../auth/interfaces/user.interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -81,9 +82,13 @@ export class TaskService {
   deleteTask(id: UUID) {
     return this._http.delete(`${environment.task_base_url}/${id}`).pipe(
       catchError((error) => {
-        console.error('Error al eliminar la tarea', error);
+        console.error('Error al eliminar la tarea', error.message);
         return of(false);
       })
     );
+  }
+
+  getUserCreater(id_task: UUID): Observable<User> {
+    return this._http.get<User>(`${environment.task_base_url}/user/${id_task}`);
   }
 }

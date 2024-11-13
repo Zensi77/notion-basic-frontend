@@ -15,6 +15,7 @@ import { SharedTask } from '../../interfaces/sharedTask.interface';
 import { catchError, of } from 'rxjs';
 import Swal from 'sweetalert2';
 import { nextTick } from 'process';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-share-task-dialog',
@@ -28,11 +29,12 @@ export class ShareTaskDialogComponent implements OnInit {
   private sharedService = inject(SharedTasksService);
 
   searchInput = new FormControl('', Validators.required);
-  email = new FormControl('', Validators.email);
+  email = new FormControl('', [Validators.email, Validators.required]);
   selectedTask?: Task;
 
-  // Accede a las tareas desde el servicio mediante `signal`
   listOfTasks = this.taskService.taskList();
+
+  constructor(private dialogRef: MatDialogRef<ShareTaskDialogComponent>) {}
 
   ngOnInit() {
     // Llama a getTasks y espera a que cargue
@@ -77,10 +79,11 @@ export class ShareTaskDialogComponent implements OnInit {
       email: this.email.value,
     };
 
-    console.log(data);
     this.sharedService.shareTask(data).subscribe({
-      next: () =>
+      next: () => {
         Swal.fire('Compartido', 'Tarea compartida con éxito', 'success'),
+          this.dialogRef.close();
+      },
       error: (err) => {
         Swal.fire(
           'Error',

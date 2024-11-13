@@ -6,10 +6,11 @@ import { TaskService } from '../../service/task.service';
 import { MaterialModule } from '../../../material/material.module';
 import { MatDialog } from '@angular/material/dialog';
 import { ShareTaskDialogComponent } from '../../components/share-task-dialog/share-task-dialog.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, MaterialModule],
+  imports: [CommonModule, MaterialModule, RouterLink],
   templateUrl: './shared-page.component.html',
   styleUrl: './shared-page.component.css',
 })
@@ -31,11 +32,6 @@ export class SharedPageComponent implements OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(ShareTaskDialogComponent, {
       width: '600px',
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('El modal fue cerrado');
-      console.log('Resultado:', result);
     });
   }
 }
