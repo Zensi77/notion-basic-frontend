@@ -30,8 +30,7 @@ export class SharedPageComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(ShareTaskDialogComponent, {
-      width: '400px',
-      data: { message: 'Este es un mensaje opcional' },
+      width: '600px',
     });
 
     dialogRef.afterClosed().subscribe((result) => {

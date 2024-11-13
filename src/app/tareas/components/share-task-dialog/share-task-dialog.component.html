@@ -2,20 +2,33 @@
     <h1 mat-dialog-title>Comparte una tarea</h1>
     <div mat-dialog-content>
         <h3>Seleccione una tarea</h3>
-        <form class="example-form">
-            <mat-form-field class="example-full-width">
-                <mat-label>Number</mat-label>
-                <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="myControl"
-                    [matAutocomplete]="auto">
-                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option.title">
-                        {{option.title}}
-                    </mat-option>
-                </mat-autocomplete>
-            </mat-form-field>
-        </form>
+        <mat-form-field>
+            <mat-label>Busque la tarea a compartir</mat-label>
+            <input type="text" matInput [formControl]="searchInput" (input)="searchTask()" [matAutocomplete]="auto" />
+            <mat-error>Seleccione una opcion</mat-error>
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                (optionSelected)="onSelectedOption( $event )">
+                <mat-option *ngFor="let task of listOfTasks" [value]="task">
+                    {{ task.title }}
+                </mat-option>
+
+
+                <mat-option *ngIf="listOfTasks.length === 0 && searchInput.value && searchInput.value.length > 0"
+                    value="">
+                    No se encontró nada con el término {{ searchInput.value }}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+        <br>
+        <mat-label>Correo del usuario con el que deseas compartir la tarea</mat-label>
+        <mat-form-field class="example-full-width">
+            <mat-label>Correo</mat-label>
+            <input matInput type="email" [formControl]="email">
+            <mat-error>Correo no valido</mat-error>
+        </mat-form-field>
     </div>
     <div mat-dialog-actions>
-        <button mat-button (click)="close()">Compartir</button>
+        <div class="spacer"></div>
+        <button mat-button (click)="share()">Compartir</button>
     </div>
 </div>
