@@ -8,14 +8,13 @@
 <span class="spacer"></span>
 <mat-divider class="m-3"></mat-divider>
 
-
 <div class="row d-flex justify-content-center">
     @if (tasks().length===0) {
     <div class="col-md-12">
         <h2>No hay tareas, añade una ahora</h2>
     </div>
     }
-    <mat-card *ngFor="let item of tasks();" class="col-md-3 m-3" [ngClass]="getStatusClass(item.state)">
+    <mat-card *ngFor="let item of tasks();" class="col-md-3 m-3 custom-card" [ngClass]="getStatusClass(item.state)">
         <mat-card-header>
             <mat-card-title>{{item.title}}</mat-card-title>
             <mat-card-subtitle>

@@ -23,7 +23,6 @@ export class RegisterPageComponent {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       password2: ['', [Validators.required, Validators.minLength(6)]],
-      role: ['USER'],
     },
     {
       // Validaciones a nivel de formulario
@@ -38,6 +37,8 @@ export class RegisterPageComponent {
   message(field: string) {
     return this.validator.message(field)(this.registerForm);
   }
+
+  // TODO: Implementar registro de usuario
 
   onSubmit() {
     if (this.registerForm.invalid) {
