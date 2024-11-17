@@ -8,12 +8,12 @@
             <mat-error>Seleccione una opcion</mat-error>
             <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
                 (optionSelected)="onSelectedOption( $event )">
-                <mat-option *ngFor="let task of listOfTasks" [value]="task">
+                <mat-option *ngFor="let task of listFiltered()" [value]="task">
                     {{ task.title }}
                 </mat-option>
 
 
-                <mat-option *ngIf="listOfTasks.length === 0 && searchInput.value && searchInput.value.length > 0"
+                <mat-option *ngIf="listFiltered().length === 0 && searchInput.value && searchInput.value.length > 0"
                     value="">
                     No se encontró nada con el término {{ searchInput.value }}
                 </mat-option>
@@ -29,6 +29,6 @@
     </div>
     <div mat-dialog-actions>
         <div class="spacer"></div>
-        <button mat-button (click)="share()">Compartir</button>
+        <button mat-button color="secondary" (click)="share()">Compartir</button>
     </div>
 </div>

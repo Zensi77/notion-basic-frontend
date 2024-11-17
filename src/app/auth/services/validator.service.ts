@@ -1,10 +1,22 @@
-import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Injectable, inject } from '@angular/core';
+import {
+  AbstractControl,
+  AsyncValidator,
+  FormGroup,
+  ValidationErrors,
+} from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { debounceTime, map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ValidatorService {
+export class ValidatorService implements AsyncValidator {
+  registerOnValidatorChange?(fn: () => void): void {
+    throw new Error('Method not implemented.');
+  }
+  private _http = inject(HttpClient);
+
   isValidField(field: string, form: FormGroup) {
     // Retorna si el campo tiene errores y ha sido tocado
     return form.controls[field].errors && form.controls[field].touched;
@@ -25,6 +37,18 @@ export class ValidatorService {
     };
   }
 
+  validate(
+    control: AbstractControl
+  ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
+    return this._http
+      .post<boolean>('http://localhost:3000/users/validate', control.value)
+      .pipe(
+        debounceTime(1000), // Espera para lanzar la petición y no petar el servidor
+        map((res) => (res ? null : { emailTaken: true })) // Falso si el email ya está en uso
+      );
+    // No uso subscribe porque no quiero suscribirme a la petición, sino devolver el observable para que escuche el formulario
+  }
+
   message(field: string) {
     return (formGroup: FormGroup) => {
       if (!formGroup.get(field)) return;
@@ -41,6 +65,8 @@ export class ValidatorService {
             return 'El campo debe tener al menos 6 caracteres';
           case 'email':
             return 'El campo debe ser un email válido';
+          case 'emailTaken':
+            return 'El email ya está en uso';
         }
       }
       return '';

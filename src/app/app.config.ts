@@ -6,15 +6,18 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { tokenInterceptor } from './tareas/interceptors/token.interceptor';
-import { NbStatusService } from '@nebular/theme';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes, withViewTransitions()),
+    provideRouter(
+      routes,
+      withViewTransitions({
+        skipInitialTransition: true,
+      })
+    ),
     provideClientHydration(),
     provideAnimationsAsync(),
     provideHttpClient(withInterceptors([tokenInterceptor])),
-    NbStatusService,
   ],
 };

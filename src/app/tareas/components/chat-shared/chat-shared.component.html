@@ -1,5 +1,0 @@
-<!-- chat.component.html -->
-<div *ngFor="let mensaje of mensajes | async">
-    <p>{{ mensaje.text }}</p>
-</div>
-<input #mensajeInput type="text" (keyup.enter)="mandarMensaje(mensajeInput.value)" />

@@ -68,7 +68,7 @@ export class AuthService {
       }),
       catchError((err) => {
         if (err.status === 401) {
-          Swal.fire('Error', 'Token inválido', 'error');
+          Swal.fire('Error', 'Session caducada', 'error');
         } else if (err.status === 500) {
           Swal.fire('Error', 'Error en el servidor', 'error');
         }

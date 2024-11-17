@@ -29,7 +29,7 @@
 
         <span class="spacer"></span>
 
-        <span>Bienvenido, {{user()?.name}}</span>
+        <span>Bienvenido, {{user()?.name | titlecase}}</span>
         <button mat-button (click)="logOut()">
             Logout
         </button>

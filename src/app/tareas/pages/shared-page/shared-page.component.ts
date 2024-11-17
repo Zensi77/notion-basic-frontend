@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, MaterialModule, RouterLink],
+  imports: [CommonModule, MaterialModule],
   templateUrl: './shared-page.component.html',
   styleUrl: './shared-page.component.css',
 })

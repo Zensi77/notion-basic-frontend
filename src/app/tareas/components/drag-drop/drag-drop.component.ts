@@ -28,7 +28,6 @@ export class DragDropComponent implements OnInit {
   private _taskService = inject(TaskService);
   private _taskList = this._taskService.taskList;
 
-  taskList = signal<Task[]>([]);
   ngOnInit(): void {
     this._taskService.getTasks();
   }
@@ -57,11 +56,19 @@ export class DragDropComponent implements OnInit {
     event.previousContainer.data[]: array de los item del contenedor de donde viene
     */
     if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, 0);
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
     } else {
       const task = event.previousContainer.data[event.previousIndex];
-      event.previousContainer.data.splice(event.previousIndex, 1);
-      event.container.data.push(task);
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
 
       if (event.container.id === state.no_comenzado) {
         task.state = state.no_comenzado;
@@ -73,7 +80,6 @@ export class DragDropComponent implements OnInit {
 
       this._taskService.editTask(task).subscribe({
         next: () => {
-          this.ngOnInit();
           this._taskService.getTasks();
         },
         error: (error) => {

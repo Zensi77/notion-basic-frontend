@@ -43,7 +43,7 @@ export class FormTaskComponent implements OnInit {
       description: [''],
       state: ['', Validators.required],
       prioridad: ['', Validators.required],
-      fecha_inicio: new FormControl<Date | null>(null),
+      fecha_inicio: new FormControl<Date>(new Date()),
       fecha_fin: new FormControl<Date | null>(null),
     });
   }

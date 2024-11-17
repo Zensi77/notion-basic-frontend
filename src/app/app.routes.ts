@@ -85,14 +85,6 @@ export const routes: Routes = [
           ),
       },
       {
-        path: 'sharedTasks/details/:id',
-        title: 'Detalles de tarea compartida',
-        loadComponent: () =>
-          import(
-            './tareas/pages/shared-details-page/shared-details-page.component'
-          ).then((m) => m.SharedDetailsPageComponent),
-      },
-      {
         path: '',
         redirectTo: 'tasks',
         pathMatch: 'full',
