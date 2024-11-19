@@ -32,11 +32,6 @@ export class DashboardPageComponent implements OnInit {
       route: './tasks',
     },
     {
-      title: 'Estadísticas',
-      icon: 'query_stats',
-      route: './stats',
-    },
-    {
       title: 'Tareas compartidas',
       icon: 'shared_task',
       route: './sharedTasks',

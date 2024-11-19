@@ -4,6 +4,9 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ValidatorService } from '../../services/validator.service';
 import { MaterialModule } from '../../../material/material.module';
+import { AuthService } from '../../services/auth.service';
+import { catchError } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   standalone: true,
@@ -16,6 +19,7 @@ export class RegisterPageComponent {
   private fb = inject(FormBuilder);
   private validator = inject(ValidatorService);
   private router = inject(Router);
+  private authService = inject(AuthService);
 
   registerForm = this.fb.group(
     {
@@ -23,7 +27,7 @@ export class RegisterPageComponent {
       email: [
         '',
         [Validators.required, Validators.email],
-        [this.validator.validate.bind(this.validator)], // bindeo el contexto del servicio
+        [this.validator.validateEmail()],
       ],
       password: ['', [Validators.required, Validators.minLength(6)]],
       password2: ['', [Validators.required, Validators.minLength(6)]],
@@ -42,16 +46,34 @@ export class RegisterPageComponent {
     return this.validator.message(field)(this.registerForm);
   }
 
-  // TODO: Implementar registro de usuario
-
   onSubmit() {
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched(); // al marcar todos los campos como tocados, se muestran los errores
       return;
     }
+  }
 
-    if (this.registerForm.valid) {
-      this.router.navigate(['/home']);
-    }
+  register() {
+    const { name, email, password } = this.registerForm.value;
+    this.authService.register({ name, email, password }).subscribe({
+      // retorna el user sin el password, lo cojo del formulario
+      next: ({ email }) => {
+        this.authService.login(email, password).subscribe({
+          next: () => {
+            Swal.fire('', 'Usuario registrado correctamente', 'success').then(
+              () => {
+                this.router.navigate(['/']);
+              }
+            );
+          },
+          error: (err: Error) => {
+            Swal.fire('Error', 'No se ha podido iniciar sesión', 'error');
+          },
+        });
+      },
+      error: (err: Error) => {
+        Swal.fire('Error', 'No se ha podido registrar el usuario', 'error');
+      },
+    });
   }
 }

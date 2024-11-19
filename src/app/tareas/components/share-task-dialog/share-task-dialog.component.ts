@@ -12,13 +12,9 @@ import { CommonModule } from '@angular/common';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { SharedTasksService } from '../../service/shared-tasks.service';
 import { SharedTask } from '../../interfaces/sharedTask.interface';
-import { catchError, of } from 'rxjs';
+import { of } from 'rxjs';
 import Swal from 'sweetalert2';
-import { nextTick } from 'process';
 import { MatDialogRef } from '@angular/material/dialog';
-import { sign } from 'crypto';
-import { WebsocketService } from '../../service/websocket.service';
-import { AuthService } from '../../../auth/services/auth.service';
 
 @Component({
   selector: 'app-share-task-dialog',
@@ -29,8 +25,7 @@ import { AuthService } from '../../../auth/services/auth.service';
 })
 export class ShareTaskDialogComponent implements OnInit {
   private taskService = inject(TaskService);
-  private authService = inject(AuthService);
-  private ws = inject(WebsocketService);
+  private sharedService = inject(SharedTasksService);
 
   searchInput = new FormControl('', Validators.required);
   email = new FormControl('', [Validators.email, Validators.required]);
@@ -46,16 +41,17 @@ export class ShareTaskDialogComponent implements OnInit {
     this.taskService.getTasks();
     // Espera un poco para que se carguen las tareas en el servicio y luego inicializo el filtro
     setTimeout(() => {
-      this.listOfTasks = this.taskService.taskList();
-      this.listFiltered.set(this.listOfTasks);
-    }, 200);
+      this.listFiltered.set(this.taskService.taskList());
+    }, 300);
   }
 
   searchTask() {
     const value: string = this.searchInput.value || '';
 
     this.listFiltered.set(
-      this.listOfTasks.filter((item) => item.title.includes(value))
+      this.listOfTasks.filter((task) =>
+        task.title.toLowerCase().includes(value.toLowerCase())
+      )
     );
   }
 
@@ -82,36 +78,24 @@ export class ShareTaskDialogComponent implements OnInit {
       return;
     }
 
-    const currentUser = this.authService.currentUser();
-    if (!currentUser) {
-      return;
-    }
-
-    const invitacion = {
-      from: currentUser.name,
-      to: this.email.value,
-      task: this.selectedTask.title,
+    const data: SharedTask = {
+      task_id: this.selectedTask.id,
+      email: this.email.value,
     };
-    this.ws.sendMessage(invitacion);
 
-    //const data: SharedTask = {
-    //  task_id: this.selectedTask.id,
-    //  email: this.email.value,
-    //};
-    //
-    //this.sharedService.shareTask(data).subscribe({
-    //  next: () => {
-    //    Swal.fire('Compartido', 'Tarea compartida con éxito', 'success'),
-    //      this.dialogRef.close();
-    //  },
-    //  error: (err) => {
-    //    Swal.fire(
-    //      'Error',
-    //      'El email introducido no corresponde con ningun usuario',
-    //      'error'
-    //    );
-    //    return of(null);
-    //  },
-    //});
+    this.sharedService.shareTask(data).subscribe({
+      next: () => {
+        Swal.fire('Compartido', 'Tarea compartida con éxito', 'success'),
+          this.dialogRef.close();
+      },
+      error: (err) => {
+        Swal.fire(
+          'Error',
+          'El email introducido no corresponde con ningun usuario',
+          'error'
+        );
+        return of(null);
+      },
+    });
   }
 }

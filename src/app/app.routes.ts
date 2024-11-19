@@ -68,15 +68,6 @@ export const routes: Routes = [
         canActivate: [isAuthenticatedguard],
       },
       {
-        path: 'stats',
-        title: 'Stats',
-        loadComponent: () =>
-          import(
-            './tareas/pages/stadistics-page/stadistics-page.component'
-          ).then((m) => m.StadisticsPageComponent),
-        canActivate: [isAuthenticatedguard],
-      },
-      {
         path: 'sharedTasks',
         title: 'Shared Tasks',
         loadComponent: () =>
