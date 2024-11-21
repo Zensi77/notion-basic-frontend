@@ -1,10 +1,10 @@
-<div class="d-flex justify-content-center mt-3">
+<div class="d-flex justify-content-center mt-3" *ngIf="taskList().length!=0">
     <div class="example-container">
         <h2>No comenzado</h2>
 
         <div cdkDropList id="No comenzado" #no_started="cdkDropList" [cdkDropListData]="no_comenzado"
             [cdkDropListConnectedTo]="[doneList, startedList]" class="example-list" (cdkDropListDropped)="drop($event)">
-            @for (item of no_comenzado; track item) {
+            @for (item of no_comenzado; track item.id) {
             <div class="example-box" cdkDrag>{{item.title}}</div>
             }
         </div>
@@ -15,7 +15,7 @@
 
         <div cdkDropList id="En progreso" #startedList="cdkDropList" [cdkDropListData]="comenzado"
             [cdkDropListConnectedTo]="[no_started, doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
-            @for (item of comenzado; track item) {
+            @for (item of comenzado; track item.id) {
             <div class="example-box" cdkDrag>{{item.title}}</div>
             }
         </div>
@@ -27,7 +27,7 @@
         <div cdkDropList id="Completado" #doneList="cdkDropList" [cdkDropListData]="completado"
             [cdkDropListConnectedTo]="[no_started, startedList]" class="example-list"
             (cdkDropListDropped)="drop($event)">
-            @for (item of completado; track item) {
+            @for (item of completado; track item.id) {
             <div class="example-box" cdkDrag>{{item.title}}</div>
             }
         </div>

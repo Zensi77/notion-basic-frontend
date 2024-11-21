@@ -18,20 +18,20 @@
         <mat-card-header>
             <mat-card-title>{{item.title}}</mat-card-title>
             <mat-card-subtitle>
-                <strong>state:</strong> {{item.state}} - <strong>Prioridad:</strong> {{item.prioridad}}
+                <strong>Estado:</strong> {{item.state}} - <strong>Prioridad:</strong> {{item.prioridad}}
             </mat-card-subtitle>
         </mat-card-header>
         <mat-divider class="m-2"></mat-divider>
         <mat-card-content>
-            <p>{{item.description}}</p>
-            <p><strong>Fecha inicio:</strong> {{item.fecha_inicio | date}}</p>
+            <p>{{item.description.length>20? (item.description | slice:0:23) + '...': item.description }}</p>
+            <p><strong>Fecha inicio:</strong> {{item.fecha_inicio | date: 'dd/MM/yyyy' }}</p>
             @if (item.fecha_fin) {
-            <p><strong>Fecha fin:</strong> {{item.fecha_fin | date}}</p>
+            <p><strong>Fecha fin:</strong> {{item.fecha_fin | date: 'dd/MM/yyyy'}}</p>
             }
         </mat-card-content>
         <mat-divider class="m-2"></mat-divider>
         <mat-card-footer>
-            <div class="d-flex justify-content-around m-2">
+            <div class="d-flex flex-wrap justify-content-around align-items-end m-2">
                 <button mat-flat-button color="primary" [routerLink]="['edit', item.id]">Edit</button>
                 <div>
                     <button class="bg-purple" mat-button [matMenuTriggerFor]="menu">Cambiar Estado</button>

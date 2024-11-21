@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+
+import { Observable } from 'rxjs';
+
 import { environment } from '../../../environments/environment.development';
 import { AuthService } from '../../auth/services/auth.service';
-import { Observable } from 'rxjs';
 import { Task } from '../interfaces/task.interface';
 import { SharedTask } from '../interfaces/sharedTask.interface';
 

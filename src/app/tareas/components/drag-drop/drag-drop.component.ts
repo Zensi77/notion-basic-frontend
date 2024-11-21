@@ -3,7 +3,6 @@ import {
   Component,
   inject,
   OnInit,
-  signal,
 } from '@angular/core';
 import {
   CdkDragDrop,
@@ -12,21 +11,24 @@ import {
   CdkDrag,
   CdkDropList,
 } from '@angular/cdk/drag-drop';
+import { CommonModule } from '@angular/common';
+
+import { of } from 'rxjs';
+
 import { TaskService } from '../../service/task.service';
 import { state, Task } from '../../interfaces/task.interface';
-import { of } from 'rxjs';
 
 @Component({
   selector: 'task-drag-drop',
   standalone: true,
-  imports: [CdkDropList, CdkDrag],
+  imports: [CommonModule, CdkDropList, CdkDrag],
   templateUrl: './drag-drop.component.html',
   styleUrl: './drag-drop.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DragDropComponent implements OnInit {
   private _taskService = inject(TaskService);
-  private _taskList = this._taskService.taskList;
+  taskList = this._taskService.taskList;
 
   ngOnInit(): void {
     this._taskService.getTasks();
@@ -34,15 +36,15 @@ export class DragDropComponent implements OnInit {
 
   // Getters por estado para que se actualicen en tiempo real
   get no_comenzado() {
-    return this._taskList().filter((task) => task.state === state.no_comenzado);
+    return this.taskList().filter((task) => task.state === state.no_comenzado);
   }
 
   get comenzado() {
-    return this._taskList().filter((task) => task.state === state.en_progreso);
+    return this.taskList().filter((task) => task.state === state.en_progreso);
   }
 
   get completado() {
-    return this._taskList().filter((task) => task.state === state.completado);
+    return this.taskList().filter((task) => task.state === state.completado);
   }
 
   drop(event: CdkDragDrop<Task[]>) {
