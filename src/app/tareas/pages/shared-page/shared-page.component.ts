@@ -1,12 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { RouterLink } from '@angular/router';
+
 import { Task } from '../../interfaces/task.interface';
 import { SharedTasksService } from '../../service/shared-tasks.service';
 import { TaskService } from '../../service/task.service';
 import { MaterialModule } from '../../../material/material.module';
-import { MatDialog } from '@angular/material/dialog';
 import { ShareTaskDialogComponent } from '../../components/share-task-dialog/share-task-dialog.component';
-import { RouterLink } from '@angular/router';
+import { listShared } from '../../interfaces/sharedTask.interface';
+import { sign } from 'crypto';
 
 @Component({
   standalone: true,
@@ -15,22 +18,20 @@ import { RouterLink } from '@angular/router';
   styleUrl: './shared-page.component.css',
 })
 export class SharedPageComponent implements OnInit {
-  private shared_list = signal<Task[]>([]);
+  listShared = signal<listShared[]>([]);
   private sharedTaskService = inject(SharedTasksService);
-  private TaskService = inject(TaskService);
-
-  sharedList = computed(() => this.shared_list());
+  private taskService = inject(TaskService);
 
   constructor(private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.sharedTaskService.getList().subscribe((tasks) => {
-      this.shared_list.set(tasks);
+      this.listShared.set(tasks);
     });
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(ShareTaskDialogComponent, {
+    this.dialog.open(ShareTaskDialogComponent, {
       width: '600px',
     });
   }

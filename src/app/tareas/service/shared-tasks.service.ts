@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { AuthService } from '../../auth/services/auth.service';
 import { Task } from '../interfaces/task.interface';
-import { SharedTask } from '../interfaces/sharedTask.interface';
+import { listShared, SharedTask } from '../interfaces/sharedTask.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -16,10 +16,9 @@ export class SharedTasksService {
   private authService = inject(AuthService);
 
   url = environment.shared_base_url;
-  getList(): Observable<Task[]> {
-    const url = `${this.url}`;
+  getList(): Observable<listShared[]> {
     const userId = this.authService.currentUser()?.id;
-    return this._http.get<Task[]>(`${url}/${userId}`);
+    return this._http.get<listShared[]>(`${this.url}/${userId}`);
   }
 
   shareTask(data: SharedTask): Observable<boolean> {

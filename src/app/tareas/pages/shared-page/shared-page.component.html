@@ -12,16 +12,25 @@
         </h1>
     </ng-template>
 
-    <div class="row" *ngIf="sharedList().length > 0; else noShared">
+    <div class="row" *ngIf="listShared().length > 0; else noShared">
         <h1>Tus tareas compartidas</h1>
 
-        @for (item of sharedList(); track $index) {
+        @for (item of listShared(); track $index) {
         <div>
             <mat-card appearance="outlined">
                 <mat-card-header>
-                    <mat-card-title> {{ item.title }} </mat-card-title>
-                    <mat-card-subtitle> {{item.description}} </mat-card-subtitle>
+                    <mat-card-title> {{ item.task.title }} </mat-card-title>
+                    <mat-card-subtitle> {{item.task.description}} </mat-card-subtitle>
                 </mat-card-header>
+                <mat-card-content>
+                    <p> <strong>Estado:</strong> {{ item.task.state }} - <strong>Prioridad:</strong> {{
+                        item.task.prioridad }} </p>
+                    <p> <strong>Fecha inicio:</strong> {{ item.task.fecha_inicio | date: 'dd/MM/yyyy' }} </p>
+                    @if (item.task.fecha_fin) {
+                    <p> <strong>Fecha fin:</strong> {{ item.task.fecha_fin | date: 'dd/MM/yyyy' }} </p>
+                    }
+                    <p> <strong>Creador:</strong> {{ item.creator.id }} </p>
+                </mat-card-content>
             </mat-card>
         </div>
         }
