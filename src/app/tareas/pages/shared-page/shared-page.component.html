@@ -5,7 +5,6 @@
             <button mat-flat-button color="primary" (click)="openDialog()">Compartir tarea</button>
         </div>
     </div>
-    <!-- TODO modificar la tarjeta para mostrar toda la info y el creador -->
     <ng-template #noShared>
         <h1>
             No tienes tareas compartidas
@@ -25,11 +24,12 @@
                 <mat-card-content>
                     <p> <strong>Estado:</strong> {{ item.task.state }} - <strong>Prioridad:</strong> {{
                         item.task.prioridad }} </p>
-                    <p> <strong>Fecha inicio:</strong> {{ item.task.fecha_inicio | date: 'dd/MM/yyyy' }} </p>
-                    @if (item.task.fecha_fin) {
-                    <p> <strong>Fecha fin:</strong> {{ item.task.fecha_fin | date: 'dd/MM/yyyy' }} </p>
+                    <p> <strong>Fecha inicio:</strong> {{ item.task.fecha_inicio| date: 'dd/MM/yyyy' }} </p>
+                    @if (item.task.fecha_fin)
+                    {
+                    <p> <strong>Fecha fin:</strong> {{ item.task.fecha_fin| date: 'dd/MM/yyyy' }} </p>
                     }
-                    <p> <strong>Creador:</strong> {{ item.creator.id }} </p>
+                    <p> <strong>Creador:</strong> {{ item.creator.name|titlecase }} - {{item.creator.email}}</p>
                 </mat-card-content>
             </mat-card>
         </div>

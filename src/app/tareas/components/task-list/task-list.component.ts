@@ -13,9 +13,10 @@ import { MaterialModule } from '../../../material/material.module';
 import { UUID } from 'node:crypto';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { catchError, filter, of, switchMap } from 'rxjs';
+import { catchError, filter, map, of, switchMap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import Swal from 'sweetalert2';
+import { SharedTasksService } from '../../service/shared-tasks.service';
 
 @Component({
   selector: 'task-list',
@@ -29,6 +30,7 @@ export class TaskListComponent implements OnInit {
   private _taskService = inject(TaskService);
   private _matDialog = inject(MatDialog);
   private _snackBar = inject(MatSnackBar);
+  private _sharedService = inject(SharedTasksService);
 
   tasks = this._taskService.taskList;
 
@@ -106,7 +108,12 @@ export class TaskListComponent implements OnInit {
       .afterClosed()
       .pipe(
         filter((result: boolean) => result), // Si el usuario cancela el dialogo, no se ejecuta el switchMap
-        switchMap(() => this._taskService.deleteTask(id)), // Si acepta el dialogo, se ejecuta el la accion
+        map(() => this._sharedService.deleteTask(id)),
+        switchMap(() => {
+          return this._sharedService
+            .deleteTask(id)
+            .pipe(switchMap(() => this._taskService.deleteTask(id)));
+        }), // Si acepta el dialogo, se ejecuta el la accion
         catchError((error) => {
           Swal.fire('Error', 'Error al eliminar la tarea', 'error');
           return of([]);

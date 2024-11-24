@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment.development';
 import { AuthService } from '../../auth/services/auth.service';
-import { Task } from '../interfaces/task.interface';
 import { listShared, SharedTask } from '../interfaces/sharedTask.interface';
 
 @Injectable({
@@ -25,5 +24,10 @@ export class SharedTasksService {
     const url = `${this.url}/${this.authService.currentUser()?.id}`;
 
     return this._http.post<boolean>(url, data);
+  }
+
+  deleteTask(id: string): Observable<boolean> {
+    const url = `${this.url}/${id}`;
+    return this._http.delete<boolean>(url);
   }
 }
