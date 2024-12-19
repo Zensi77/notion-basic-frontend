@@ -69,9 +69,7 @@ export class AuthService {
         return true;
       }),
       catchError((err) => {
-        if (err.status === 401) {
-          Swal.fire('', 'Sesion caducada', 'error');
-        } else if (err.status === 500) {
+        if (err.status === 500) {
           Swal.fire('', 'Error en el servidor', 'error');
         }
         this._authStatus.set(AuthStatus.unauthenticated);

@@ -67,12 +67,12 @@ export class RegisterPageComponent {
             );
           },
           error: (err: Error) => {
-            Swal.fire('Error', 'No se ha podido iniciar sesión', 'error');
+            Swal.fire('', 'No se ha podido iniciar sesión', 'error');
           },
         });
       },
       error: (err: Error) => {
-        Swal.fire('Error', 'No se ha podido registrar el usuario', 'error');
+        Swal.fire('', 'No se ha podido registrar el usuario', 'error');
       },
     });
   }

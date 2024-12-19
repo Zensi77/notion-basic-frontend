@@ -89,7 +89,7 @@ export class TaskListComponent implements OnInit {
         : state.completado;
     this._taskService.editTask(item).subscribe(() => {
       catchError((error) => {
-        Swal.fire('Error', 'Error al modificar el estado de la tarea', 'error');
+        Swal.fire('', 'Error al modificar el estado de la tarea', 'error');
         return of(null);
       });
       this._taskService.getTasks();
@@ -115,7 +115,7 @@ export class TaskListComponent implements OnInit {
             .pipe(switchMap(() => this._taskService.deleteTask(id)));
         }), // Si acepta el dialogo, se ejecuta el la accion
         catchError((error) => {
-          Swal.fire('Error', 'Error al eliminar la tarea', 'error');
+          Swal.fire('', 'Error al eliminar la tarea', 'error');
           return of([]);
         })
       )

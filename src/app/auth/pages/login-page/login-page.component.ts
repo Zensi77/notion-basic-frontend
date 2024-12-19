@@ -58,7 +58,8 @@ export class LoginPageComponent {
       const { email, password } = this.loginForm.value;
       this._authService.login(email, password).subscribe({
         next: () => this.router.navigate(['/tasks']),
-        error: (err) => Swal.fire('Error', 'Credenciales incorrectas', 'error'),
+        error: (err: Error) =>
+          Swal.fire('', 'Credenciales incorrectas', 'error'),
       });
     }
   }
