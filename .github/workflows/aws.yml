@@ -1,0 +1,38 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main  # O la rama que uses
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🛠️ Clonar el repo
+        uses: actions/checkout@v4
+
+      - name: 🚀 Conectar a EC2 y desplegar
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ~/notion-basic || git clone https://github.com/TU_USUARIO/TU_REPO.git ~/notion-basic
+            cd ~/notion-basic
+            git pull origin main
+
+            echo "📦 Instalando dependencias..."
+            cd backend
+            docker compose down
+            docker compose up -d --build
+
+            cd ../frontend
+            npm install
+            ng build --configuration=production
+            sudo rm -rf /var/www/html/*
+            sudo cp -r dist/todo-app/* /var/www/html/
+
+            echo "✅ Despliegue completado"
