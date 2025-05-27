@@ -15,9 +15,9 @@ FROM nginx:stable-alpine
  
 WORKDIR /usr/share/nginx/html
  
-COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 COPY --from=build /app/dist/todo-app/browser ./
+COPY nginx.conf /etc/nginx/conf.d/default.conf
  
 EXPOSE 80
  
