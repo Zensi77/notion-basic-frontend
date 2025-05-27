@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { debounceTime, map } from 'rxjs';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',

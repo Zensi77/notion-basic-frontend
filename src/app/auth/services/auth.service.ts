@@ -1,14 +1,12 @@
-import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { User } from '../interfaces/user.interfaces';
 import { AuthStatus } from '../interfaces/auth-status.enum';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { catchError, map, Observable, of, throwError } from 'rxjs';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import { LoginResponse } from '../interfaces/login-response';
 import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
-import { FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',

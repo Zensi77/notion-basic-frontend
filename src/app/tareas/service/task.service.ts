@@ -2,7 +2,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { Task } from '../interfaces/task.interface';
 import { AuthService } from '../../auth/services/auth.service';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import { catchError, Observable, of, throwError } from 'rxjs';
 import { UUID } from 'crypto';
 import { User } from '../../auth/interfaces/user.interfaces';
