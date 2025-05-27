@@ -15,7 +15,7 @@ FROM nginx:stable-alpine
  
 WORKDIR /usr/share/nginx/html
  
-COPY --from=build /app/dist/frontend/browser ./
+COPY --from=build /app/dist/todo-app/browser ./
  
 EXPOSE 80
  
