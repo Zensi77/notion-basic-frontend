@@ -46,14 +46,12 @@ export class RegisterPageComponent {
     return this.validator.message(field)(this.registerForm);
   }
 
-  onSubmit() {
+  register() {
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched(); // al marcar todos los campos como tocados, se muestran los errores
       return;
     }
-  }
 
-  register() {
     const { name, email, password } = this.registerForm.value;
     this.authService.register({ name, email, password }).subscribe({
       // retorna el user sin el password, lo cojo del formulario
